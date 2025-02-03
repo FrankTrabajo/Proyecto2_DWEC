@@ -25,7 +25,6 @@ const getUser = async(req,res) => {
 const createUser = async (req,res) => {
     try {
         await User.create(req.body);
-        res.sendFile(path.join(__dirname, 'public', 'login.html'));
     } catch (error) {
         res.status(500).json({message: error.message});
     }
