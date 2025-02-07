@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 const postRoute = require('./routes/postRoute.js');
+const userRoute = require('./routes/userRoute.js');
 const PORT = 3000;
 
 // middleware
@@ -36,6 +37,7 @@ app.get("/register", (req, res) => {
 });
 
 app.use('/post', postRoute);
+app.use('/user', userRoute);
 
 app.get('/', (req,res) => {
     //Aqui debe de aparecer el index

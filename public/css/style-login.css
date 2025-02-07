@@ -1,0 +1,87 @@
+html {
+    --s: 9px; /* control the size*/
+    --c1: #3b2d38;
+    --c2: #f02475;
+    
+    --g:#0000 66%,var(--c1) 68% 98%,#0000;
+    background:
+      radial-gradient(30% 30% at 0%   30%,var(--g))
+       var(--s) calc(9*var(--s)),
+      radial-gradient(30% 30% at 100% 30%,var(--g))
+       var(--s) calc(-1*var(--s)),
+      radial-gradient(30% 30% at 30% 100%,var(--g))
+       calc(10*var(--s)) 0,
+      radial-gradient(30% 30% at 30% 0%  ,var(--g))
+       var(--c2);
+    background-size: calc(20*var(--s)) calc(20*var(--s));
+  }
+
+
+body{
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100svh; /* La altura mas pequeña de la pantalla */
+    font-size: larger;
+}
+
+.form-container{
+    width: 500px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 50px;
+}
+
+form{
+    display:flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+form+p form p{
+    text-align: center;
+}
+
+input{
+    border-radius: 4px;
+    border: unset;
+    background-color: rgb(0,0,0,0.1);
+    padding: 15px 30px;
+    font-size: larger;
+}
+
+.error{
+    color: red;
+}
+
+.hide{
+    display:none;
+}
+
+#submit{
+    background-color: #f02475;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #f02475;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    border: unset;
+    padding: 15px 30px;
+    font-size: larger;
+}
+
+
+label{
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+
+
