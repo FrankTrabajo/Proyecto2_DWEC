@@ -1,4 +1,10 @@
 const Post = require('../models/postModel.js');
+const User = require('../models/userModel.js');
+const jsonwebtoken = require('jsonwebtoken');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 
 const getPosts = async (req, res) => {
     try {
@@ -21,10 +27,38 @@ const getPost = async (req,res) => {
 
 const createPost = async (req,res) => {
     try {
-        const post = await Post.create(req.body);
+        //Aqui leo el token de la cookie
+        const token = req.cookies.authToken;
+        console.log(token);
+        if(!token){
+            return res.status(401).json({message: "No autorizado, debe iniciar sesión"});
+        }
+
+        //Verifico si el token es correcto
+        const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+        console.log("Token correcto" + decoded);
+        if(!decoded){
+            return res.status(401).json({message: "No autorizado, debe iniciar sesión"});
+        }
+        
+
+        const user = await User.findById(decoded.userId).select('-password');
+        if(!user){
+            return res.status(401).json({message: "No autorizado, debe iniciar sesión"});
+        }
+
+        const {title, type, description, photo, url} = req.body;
+        
+
+        const post = await Post.create({
+            title, type, description, photo, url, owner: user._id
+        });
+        user.posts.push(post._id);
+        await user.save();
+        
         res.status(200).json(post);
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({message: "Error al crear post" + error.message});
     }
 };
 

@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Formlario para crear Post</h1>
-    <form action="/" >
+    <form  >
         <label for="title">Titulo del post: </label>
         <input type="text" name="title" id="title"><br><br>
         <label for="type">Tipo de post: </label>
@@ -26,6 +26,7 @@
         fetch('/post/' , {
             method: 'POST',
             headers: { "Content-Type": "application/json"},
+            credentials: "include",
             body: JSON.stringify({
                 title:document.getElementById('title').value,
                 type: document.getElementById('type').value,
@@ -37,6 +38,7 @@
         .then(message => message.json())
         .then(message => {
             console.log(message);
+            alert('post creado correctamente');
         })
         .catch(err => console.error(err));
     }
