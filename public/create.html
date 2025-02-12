@@ -1,46 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post create</title>
 </head>
+
 <body>
-    <h1>Formlario para crear Post</h1>
-    <form  >
-        <label for="title">Titulo del post: </label>
-        <input type="text" name="title" id="title"><br><br>
-        <label for="type">Tipo de post: </label>
-        <input type="text" name="type" id="type"><br><br>
-        <label for="description">Descripcion del post: </label>
-        <textarea name="description" id="description"></textarea><br><br>
-        <label for="photo">Foto del post: </label>
-        <input type="text" name="photo" id="photo"><br><br>
-        <label for="url">URL del post: </label>
-        <input type="text" name="url" id="url"><br><br>
-        <input type="submit" onclick="create()" value="Crear">
-    </form>
+    <div class="form-container" id="form-container">
+        <form id="post-form">
+        </form>
+    </div>
 </body>
-<script>
-    function create(){
-        fetch('/post/' , {
-            method: 'POST',
-            headers: { "Content-Type": "application/json"},
-            credentials: "include",
-            body: JSON.stringify({
-                title:document.getElementById('title').value,
-                type: document.getElementById('type').value,
-                description: document.getElementById('description').value,
-                photo: document.getElementById('photo').value,
-                url: document.getElementById('url').value
-            })
-        })
-        .then(message => message.json())
-        .then(message => {
-            console.log(message);
-            alert('post creado correctamente');
-        })
-        .catch(err => console.error(err));
-    }
-</script>
+<script src="js/post.js"></script>
+
 </html>

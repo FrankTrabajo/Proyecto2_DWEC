@@ -7,6 +7,7 @@ const postRoute = require('./routes/postRoute.js');
 const userRoute = require('./routes/userRoute.js');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
 const PORT = 3000;
 
 // middleware
@@ -15,11 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cookieParser());
-//Esto se utiliza para que las cookies creadas puedan ser enviadas en todo el programa
-// app.use(cors({
-//     origin: "http://localhost:3000",
-//     credentials: true
-// }));
+app.use(fileUpload());
 
 mongoose.connect("mongodb+srv://fran:Ar3DAU4nbytye89Z@prueba1.8u19y.mongodb.net/?retryWrites=true&w=majority&appName=Prueba1")
     .then(() => {

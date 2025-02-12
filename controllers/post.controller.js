@@ -3,6 +3,7 @@ const User = require('../models/userModel.js');
 const jsonwebtoken = require('jsonwebtoken');
 const dotenv = require('dotenv');
 
+
 dotenv.config();
 
 
@@ -47,8 +48,11 @@ const createPost = async (req,res) => {
             return res.status(401).json({message: "No autorizado, debe iniciar sesión"});
         }
 
-        const {title, type, description, photo, url} = req.body;
+        const {title, type, description, url} = req.body;
+        const { photo } = req.files;
         
+
+        photo.mv(__dirname + '/upload/' + photo.name);
 
         const post = await Post.create({
             title, type, description, photo, url, owner: user._id
