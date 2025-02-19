@@ -17,6 +17,11 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(fileUpload());
+app.use(cors());
+
+
+
+
 
 mongoose.connect("mongodb+srv://fran:Ar3DAU4nbytye89Z@prueba1.8u19y.mongodb.net/?retryWrites=true&w=majority&appName=Prueba1")
     .then(() => {

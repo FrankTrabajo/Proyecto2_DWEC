@@ -1,7 +1,7 @@
-function mostrarNotificacion() {
+function mostrarNotificacion(message) {
     if (Notification.permission === 'granted') {
-        new Notification("Post creado correctamente", {
-            body: '!Nuevo post!'
+        new Notification("Post creado", {
+            body: 'Nuevo post creado'
         });
     } else if (Notification.permission !== 'denied') {
         Notification.requestPermission().then(permission => {
@@ -15,22 +15,22 @@ function mostrarNotificacion() {
 }
 
 
-function create() {
+function create(postForm) {
+    let formData = new FormData(postForm);
     fetch('/post/', {
         method: 'POST',
-        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({
-            title: document.getElementById('title').value,
-            type: document.getElementById('type').value,
-            description: document.getElementById('description').value,
-            photo: document.getElementById('photo').value,
-            url: document.getElementById('url').value
-        })
+        body: formData
+        // body: JSON.stringify({
+        //     title: document.getElementById('title').value,
+        //     type: document.getElementById('type').value,
+        //     description: document.getElementById('description').value,
+        //     photo: document.getElementById('photo').value,
+        // })
     })
         .then(message => message.json())
         .then(message => {
-            console.log(message);
+            console.log(message.message);
             mostrarNotificacion();
 
         })
@@ -44,6 +44,8 @@ function createForm(){
 
     let postForm = document.getElementById('post-form');
     postForm.enctype = "multipart/form-data";
+    postForm.method = 'POST';
+
 
     //Titulo
     let labelTitle = document.createElement('label');
@@ -58,31 +60,23 @@ function createForm(){
     labelType.textContent = "Tipo de post";
     let inputType = document.createElement('input');
     inputType.type = 'text';
-    inputType.name = 'title';
-    inputType.id = 'title';
+    inputType.name = 'type';
+    inputType.id = 'type';
 
     //Descripcion
     let labelDescription = document.createElement('label');
-    labelDescription.textContent = "Tipo de post";
+    labelDescription.textContent = "Descripcion de post";
     let textAreaDescription = document.createElement('textArea');
-    textAreaDescription.name = 'title';
-    textAreaDescription.id = 'title';
+    textAreaDescription.name = 'description';
+    textAreaDescription.id = 'description';
 
     //Foto
     let labelFoto = document.createElement('label');
-    labelFoto.textContent = "Tipo de post";
+    labelFoto.textContent = "Foto de post";
     let inputFoto = document.createElement('input');
     inputFoto.type = 'file';
-    inputFoto.name = 'title';
-    inputFoto.id = 'title';
-
-    //Url
-    let labelUrl = document.createElement('label');
-    labelUrl.textContent = "Tipo de post";
-    let inputUrl = document.createElement('input');
-    inputUrl.type = 'text';
-    inputUrl.name = 'title';
-    inputUrl.id = 'title';
+    inputFoto.name = 'photo';
+    inputFoto.id = 'photo';
 
     //Submit
     let inputSubmit = document.createElement('input');
@@ -91,7 +85,7 @@ function createForm(){
     inputSubmit.value = "Crear"
     inputSubmit.addEventListener('click', function(e){
         e.preventDefault();
-        create();
+        create(postForm);
     })
 
     postForm.appendChild(labelTitle);
@@ -106,8 +100,7 @@ function createForm(){
     postForm.appendChild(labelFoto);
     postForm.appendChild(inputFoto);
 
-    postForm.appendChild(labelUrl);
-    postForm.appendChild(inputUrl);
+    postForm.appendChild(inputSubmit);
 
     formContainer.appendChild(postForm);
 

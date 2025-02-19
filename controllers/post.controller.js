@@ -3,7 +3,8 @@ const User = require('../models/userModel.js');
 const jsonwebtoken = require('jsonwebtoken');
 const dotenv = require('dotenv');
 
-
+const path = require('path');
+const fs = require('fs');
 dotenv.config();
 
 
@@ -48,21 +49,39 @@ const createPost = async (req,res) => {
             return res.status(401).json({message: "No autorizado, debe iniciar sesión"});
         }
 
-        const {title, type, description, url} = req.body;
-        const { photo } = req.files;
-        
 
-        photo.mv(__dirname + '/upload/' + photo.name);
+        const {title, type, description, url} = req.body;
+
+
+        if(!req.files || !req.files.photo){
+            return res.status(400).json({message: "Error al crear post, debe subir una foto"});
+        }
+
+        const photo  = req.files.photo;
+        let uploadDir = path.join(__dirname, '../public/uploads/');
+
+        if(!fs.existsSync(uploadDir)){
+            fs.mkdirSync(uploadDir, {recursive:true});
+        }
+        const photoPath = path.join(uploadDir, photo.name);
+
+        await photo.mv(photoPath);
+            
 
         const post = await Post.create({
-            title, type, description, photo, url, owner: user._id
+            title,
+            type, 
+            description,
+            photo: `/uploads/${photo.name}`, 
+            url, 
+            owner: user._id
         });
         user.posts.push(post._id);
         await user.save();
         
-        res.status(200).json(post);
+        return res.status(200).json(post);
     } catch (error) {
-        res.status(500).json({message: "Error al crear post" + error.message});
+        return res.status(500).json({message: "Error al crear post" + error.message});
     }
 };
 
