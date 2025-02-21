@@ -17,7 +17,7 @@ function mostrarNotificacion(message) {
 
 function create(postForm) {
     let formData = new FormData(postForm);
-    fetch('/post/', {
+    fetch('/api/post/', {
         method: 'POST',
         credentials: "include",
         body: formData
@@ -58,10 +58,17 @@ function createForm(){
     //Tipo
     let labelType = document.createElement('label');
     labelType.textContent = "Tipo de post";
-    let inputType = document.createElement('input');
-    inputType.type = 'text';
-    inputType.name = 'type';
-    inputType.id = 'type';
+    let selectType = document.createElement('select');
+    selectType.name = 'type';
+    selectType.id = 'type';
+    
+    let options = ['Montaña', 'Playa', 'Lago', 'Ciudad', 'Rio'];
+    options.forEach(optionText => {
+        let option = document.createElement('option');
+        option.value = optionText;
+        option.textContent = optionText;
+        selectType.appendChild(option);
+    })
 
     //Descripcion
     let labelDescription = document.createElement('label');
@@ -86,13 +93,14 @@ function createForm(){
     inputSubmit.addEventListener('click', function(e){
         e.preventDefault();
         create(postForm);
-    })
+        window.location.href = '/new_site';
+    });
 
     postForm.appendChild(labelTitle);
     postForm.appendChild(inputTitle);
 
     postForm.appendChild(labelType);
-    postForm.appendChild(inputType);
+    postForm.appendChild(selectType);
 
     postForm.appendChild(labelDescription);
     postForm.appendChild(textAreaDescription);

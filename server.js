@@ -46,7 +46,7 @@ app.get("/register", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'register.html'));
 });
 
-app.use('/post', postRoute);
+app.use('/api/post', postRoute);
 app.use('/user', userRoute);
 
 app.get('/', (req,res) => {
@@ -54,6 +54,6 @@ app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/home', (req,res) => {
+app.get('/create_post', (req,res) => {
     res.sendFile(path.join(__dirname, 'public', 'create.html'));
 })

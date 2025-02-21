@@ -52,27 +52,27 @@ const createPost = async (req,res) => {
 
         const {title, type, description, url} = req.body;
 
+        let photoPath = null;
 
-        if(!req.files || !req.files.photo){
-            return res.status(400).json({message: "Error al crear post, debe subir una foto"});
+
+        if(req.files && req.files.photo){
+           const photo  = req.files.photo;
+            let uploadDir = path.join(__dirname, '../public/uploads/');
+            if(!fs.existsSync(uploadDir)){
+                fs.mkdirSync(uploadDir, {recursive:true});
+
+                photoPath = `/uploads/${photo.name}`;
+                const url_photo = path.join(uploadDir, photo.name);
+                await photo.mv(url_photo);
+            } 
         }
 
-        const photo  = req.files.photo;
-        let uploadDir = path.join(__dirname, '../public/uploads/');
-
-        if(!fs.existsSync(uploadDir)){
-            fs.mkdirSync(uploadDir, {recursive:true});
-        }
-        const photoPath = path.join(uploadDir, photo.name);
-
-        await photo.mv(photoPath);
-            
 
         const post = await Post.create({
             title,
             type, 
             description,
-            photo: `/uploads/${photo.name}`, 
+            photo: photoPath, 
             url, 
             owner: user._id
         });
