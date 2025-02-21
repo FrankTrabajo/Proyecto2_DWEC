@@ -13,10 +13,21 @@ function mostrarPopup(infoHTML) {
     popup.style.display = "flex"; // Mostrar popup
 }
 
+let coordenadas = null;
 function cargarMapa() {
     try {
         map = L.map('map').setView([LATITUD_MADRID,LONGITUD_MADRID], ZOOM_PREDETERMINADO);
-       
+     
+        let lat, long;
+         
+        map.on('click', function(e){
+            lat = e.latlng.lat;
+            long = e.latlng.lng;
+            
+            pintarUbicacionExtra(e.latlng);
+        });
+
+
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
@@ -28,6 +39,16 @@ function cargarMapa() {
   
 }
 
+function pintarUbicacionExtra(coords){
+    if(coordenadas){
+        map.removeLayer(coordenadas);
+    }
+
+    coordenadas = L.marker(coords)
+    .addTo(map);
+
+    console.log(coords);
+}
 
 
 
@@ -75,11 +96,11 @@ function pintarUbicacion(coords,icono, titulo) {
     });
 
     marcador.on("click", function(){
-        mostrarPopup(titulo);
+        map.removeLayer(marcador);
     })
 
-    
 }
+
 
 
 function cargarDatos(){
