@@ -59,6 +59,12 @@ app.get('/mapa', (req,res) => {
     res.sendFile(path.join(__dirname, 'public', 'mapa.html'));
 });
 
+app.get('/mapa', (req,res) => {
+    //Aqui debe de aparecer el index
+    res.sendFile(path.join(__dirname, 'public', 'mapaSitios.html'));
+});
+
+
 app.get('/create_post', (req,res) => {
     res.sendFile(path.join(__dirname, 'public', 'create.html'));
 })

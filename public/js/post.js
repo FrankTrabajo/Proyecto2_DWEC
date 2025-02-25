@@ -115,3 +115,56 @@ function createForm(){
 }
 
 createForm();
+
+const popup = document.getElementById("popup"); 
+const popupContent = popup.querySelector(".popup-content")
+const LONGITUD_MADRID = -3.703790;
+const LATITUD_MADRID = 40.416775;
+const ZOOM_PREDETERMINADO = 13;
+const UBICACION = "https://overpass-api.de/api/interpreter?data=[out:json];node[\"historic\"=\"monument\"](around:5000,40.416775,-3.703790);out;";
+const RESTO_UBICACIONES= `https://cdn-icons-png.flaticon.com/512/252/252025.png`;
+const mapContainer = document.getElementById("map");
+let map = null;
+
+function mostrarPopup(infoHTML) {
+    popupContent.innerHTML = infoHTML; // Insertar contenido en el popup
+    popup.style.display = "flex"; // Mostrar popup
+}
+
+let coordenadas = null;
+let lat, long;
+function cargarMapa() {
+    try {
+        map = L.map('map').setView([LATITUD_MADRID,LONGITUD_MADRID], ZOOM_PREDETERMINADO);
+     
+        map.on('click', function(e){
+            lat = e.latlng.lat;
+            long = e.latlng.lng;
+            
+            pintarUbicacionExtra(e.latlng);
+        });
+
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        return true;
+    } catch (error) {
+        return false;
+    }
+  
+}
+
+function pintarUbicacionExtra(coords){
+    if(coordenadas){
+        map.removeLayer(coordenadas);
+    }
+
+    coordenadas = L.marker(coords)
+    .addTo(map);
+
+    console.log(coords);
+}
+
+
