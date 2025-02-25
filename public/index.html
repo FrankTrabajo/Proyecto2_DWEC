@@ -11,9 +11,9 @@
         <div class="barra-de-arriba">
             <div><!--Aqui el logo nombre o cosa--></div>
             <div class="botones">
-                <a href="mapa.html"><input type="button" value="Mapa"></a>
-                <button>Iniciar sesión</button>
-                <button>Registrarse</button>
+                <a href="/mapa"><input type="button" value="Mapa"></a>
+                <button><a href="/login">Iniciar sesión</a></button>
+                <button><a href="/register">Registrarse</a></button>
             </div>
         </div>
         <div class="buscar">
@@ -33,7 +33,7 @@
     </main>
 </body>
 <script>
-    fetch("/post/", {method:"get"})
+    fetch("/api/post/", {method:"get"})
         .then(response => response.json())
         .then(datos => {console.log(datos), pintarPOST(datos);})
         .catch(err => console.error(err));
