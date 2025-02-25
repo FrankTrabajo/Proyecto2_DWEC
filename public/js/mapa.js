@@ -17,27 +17,27 @@ let coordenadas = null;
 function cargarMapa() {
     try {
         map = L.map('map').setView([LATITUD_MADRID,LONGITUD_MADRID], ZOOM_PREDETERMINADO);
-     
-        let lat, long;
-         
-        map.on('click', function(e){
-            lat = e.latlng.lat;
-            long = e.latlng.lng;
-            
-            pintarUbicacionExtra(e.latlng);
-        });
-
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-
+        pintarNuevasUbicaciones(lat, long);
         return true;
     } catch (error) {
         return false;
     }
   
 }
+let lat, long;
+function pintarNuevasUbicaciones(lat, long){
+    map.on('click', function(e){
+        lat = e.latlng.lat;
+        long = e.latlng.lng;
+        
+        pintarUbicacionExtra(e.latlng);
+    });
+}  
+        
 
 function pintarUbicacionExtra(coords){
     if(coordenadas){
@@ -95,9 +95,6 @@ function pintarUbicacion(coords,icono, titulo) {
         titulo
     });
 
-    marcador.on("click", function(){
-        map.removeLayer(marcador);
-    })
 
 }
 
@@ -111,7 +108,7 @@ function cargarDatos(){
         switch(xhr.status){
             case 200:
                 console.log(JSON.parse(xhr.response)['elements']);
-                let ubicaciones = JSON.parse(xhr.response)['elements'];
+                const ubicaciones = JSON.parse(xhr.response)['elements'];
 
                 ubicaciones.forEach(element => {
                     pintarUbicacion([element['lat'],element['lon']], RESTO_UBICACIONES,element['tags']['name']);
