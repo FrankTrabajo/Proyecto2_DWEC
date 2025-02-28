@@ -72,3 +72,11 @@ app.get('/create_post', (req,res) => {
 app.get('/admin-dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 })
+
+app.get("/check-auth", (req, res) => {
+    if(req.cookies.authToken) {
+        res.status(200).json({ logueado: true });
+    }else {
+        res.status(200).json({ logueado: false });
+    }
+});

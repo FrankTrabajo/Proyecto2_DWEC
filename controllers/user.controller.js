@@ -10,32 +10,15 @@ dotenv.config();
 const getUsers =  async (req,res) => {
     try {
 
-        //Aqui leo el token de la cookie
-        const token = req.cookies.authToken;
-        console.log(token);
-
-        if(token){
-            //Aqui verifico si el token esta correcto
-            const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
-            console.log("Token decodificado", decoded);
-
-            //Aqui compruebo que el id que se ha guardado en el token está bien
-            if(!decoded.userId.match(/^[0-9a-fA-F]{24}$/)){
-                return res.status(400).json({message: "ID de usuario no valido"});
+        const users = await User.find({});
+        let usuariosSend = [];
+        for(let usuario of users){
+            if(usuario.name !== 'Admin'){
+                usuariosSend.push(usuario);
             }
-
-            //Busco el usuiario de la base de datos pero sin la contraseña
-            const user = await User.findById(decoded.userId).select("-password");
-
-            if(!user){
-                return res.status(404).json({message: "Usuario no encontrado"});
-            }
-
-            return res.status(200).json({ email: user.email, user: user.name});
         }
 
-        const users = await User.find({});
-        res.status(200).json(users);
+        res.status(200).json(usuariosSend);
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -125,7 +108,7 @@ const loginUser = async (req,res) => {
         }
         
         //Crear TOKEN
-        const token = jsonwebtoken.sign({userId: user._id.toString(), email: user.email}, process.env.JWT_SECRET, {expiresIn: '1h'});
+        const token = jsonwebtoken.sign({userId: user._id.toString(), email: user.email, role: user.role}, process.env.JWT_SECRET, {expiresIn: '1h'});
 
         //Enviar el token como cookie
         res.cookie('authToken', token, {httpOnly:true, secure: false, maxAge: 3600000});

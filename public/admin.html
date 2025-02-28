@@ -4,11 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px; 
+        } th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th{
+            background-color: #f2f2f2;
+        }
+        td {
+            cursor: pointer;
+        }
+        #postsContainer {
+            margin-top: 20px;
+        }
+        .post {
+            margin-bottom:15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .post h3{
+            margin: 0;
+        }
+        .post p {
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
     <header>
         <div id="header-container" class="header-container">
             <h1 id="title"></h1>
+            <button id="logoutButton"></button>
         </div>
     </header>
     <main>
@@ -117,6 +150,24 @@
 
     obtenerUsuarios();
         
+
+    function logout(){
+        fetch('/user/logout', {
+            method: 'POST',
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.message === 'Sesion cerrada') {
+                window.location.href = '/login';
+            } else {
+                alert('Error al cerrar sesión');
+            }
+        })
+        .catch(err => console.error( 'Errro en el logout' + err))
+    }
+    document.getElementById('logoutButton').textContent = "Cerrar sesión";
+    document.getElementById('logoutButton').addEventListener('click', logout);
 
 </script>
 </html>
