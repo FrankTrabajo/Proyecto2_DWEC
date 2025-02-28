@@ -89,12 +89,50 @@
 
                 trUser.append(tdNombre);
                 trUser.appendChild(tdEmail);
+                if(usuario.active){
+                    let tdEliminar = document.createElement('td');
+                    let botonElim = document.createElement('button');
+                    botonElim.textContent = "Deshabilitar Usuario";
+                    botonElim.addEventListener('click', function() {
+                        deshabilitar(usuario._id);
+                    });
+                    tdEliminar.appendChild(botonElim);
+                    trUser.appendChild(tdEliminar);
+                }else{
+                    let tdActivar = document.createElement('td');
+                    let botonActivar = document.createElement('button');
+                    botonActivar.textContent = "Habilitar Usuario";
+                    botonActivar.addEventListener('click', function (){
+                        activar(usuario._id);
+                        window.location.reload();
+                    });
+                    tdActivar.appendChild(botonActivar);
+                    trUser.appendChild(tdActivar);
+                }
                 table.appendChild(trUser); 
             }
             
         }
         
         
+    }
+
+    function deshabilitar(id){
+        fetch(`/user/inactive/${id}`, { method: 'PUT'})
+        .then(response => response.json())
+        .then(datos => {
+            alert("Usuario desactivado");
+        })
+        .catch(err => console.error(err));
+    }
+    function activar(id){
+        fetch(`/user/active/${id}`, { method: 'PUT'})
+        .then(response => response.json())
+        .then(datos => {
+            alert("Usuario active");
+            
+        })
+        .catch(err => console.error(err));
     }
 
     function obtenerUsuarios(){
@@ -123,12 +161,12 @@
     function mostrarPost(posts){
         console.log(posts);
         let postContainer = document.getElementById('post-container');
-        postContainer.textContent = '';
+        postContainer.innerHTML = '<h1>Post del usuario</h1>';
 
         if(posts.length === 0){
             postContainer.textContent = "Este usuario no tiene posts";
         } else {
-            for(post in posts){
+            for(post of posts){
 
                 let postDiv = document.createElement('div');
                 postDiv.classList.add('post');
@@ -137,7 +175,7 @@
                 postTitle.textContent = post.title;
 
                 let postDescription = document.createElement('p');
-                postDescription.textContent = post.postDescription;
+                postDescription.textContent = post.description;
 
                 postDiv.appendChild(postTitle);
                 postDiv.appendChild(postDescription);

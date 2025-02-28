@@ -125,6 +125,26 @@ const logoutUser = async(req,res) => {
     res.json({message: "Sesion cerrada"});
 }
 
+const active = async (req,res) => {
+    const { id } = req.params;
+    let user = await User.findByIdAndUpdate(id,{ active: true }, { new: true } );
+
+    if(!user){
+        res.status(404).json({message: "Usuario no encontrado"});
+    }
+    res.status(200);
+}
+
+const inactive = async (req,res) => {
+    const { id } = req.params;
+    let user = await User.findByIdAndUpdate(id,{ active: false }, { new: true } );
+
+    if(!user){
+        res.status(404).json({message: "Usuario no encontrado"});
+    }
+    res.status(200);
+}
+
 module.exports = {
     getUsers,
     getUser,
@@ -132,5 +152,7 @@ module.exports = {
     updateUser,
     deleteUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    active,
+    inactive
 }
