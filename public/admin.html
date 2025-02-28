@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+</head>
+<body>
+    <header>
+        <div id="header-container" class="header-container">
+            <h1 id="title"></h1>
+        </div>
+    </header>
+    <main>
+        <div id="main-container" class="main-container">
+            <div id="user-container" class="user-container">
+                <table id="table"></table>
+            </div>
+            <div id="post-container" class="post-container"></div>
+        </div>
+    </main>
+    <footer>
+
+    </footer>
+</body>
+<script defer>
+    
+    let h1Title = document.getElementById('title');
+    h1Title.textContent = "Bienvenido Usuario Administrador";
+
+    function createTable(usuarios){
+        let table = document.getElementById('table');
+        let tr = document.createElement('tr');
+        let th = document.createElement('th');
+        let thEmail = document.createElement('th');
+        th.textContent = "Nombre de usuario";
+        thEmail.textContent = "Correo del usuario";
+        tr.append(th);
+        tr.appendChild(thEmail);
+        table.append(tr);
+        for(let usuario of usuarios){
+            if(usuario.name !== 'Admin'){
+               let trUser = document.createElement('tr');
+                let tdNombre = document.createElement('td');
+                let tdEmail = document.createElement('td');
+                let aEmail = document.createElement('a');
+
+                aEmail.textContent = usuario.email;
+                aEmail.addEventListener('click', function() {
+                    obtenerPosts(usuario._id);
+                });
+
+                tdEmail.appendChild(aEmail);
+                tdNombre.textContent = usuario.name;
+
+
+                trUser.append(tdNombre);
+                trUser.appendChild(tdEmail);
+                table.appendChild(trUser); 
+            }
+            
+        }
+        
+        
+    }
+
+    function obtenerUsuarios(){
+        fetch('/user/', {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then(datos => {
+            console.log('datos recibidos');
+            createTable(datos);
+        })
+        .catch(err => console.error(err));
+    }
+
+    function obtenerPosts(usuario){
+        fetch(`/api/post/${usuario}`, {
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(data => {
+            mostrarPost(data);
+        })
+        .catch(err => console.error(err));
+    }
+
+    function mostrarPost(posts){
+        console.log(posts);
+        let postContainer = document.getElementById('post-container');
+        postContainer.textContent = '';
+
+        if(posts.length === 0){
+            postContainer.textContent = "Este usuario no tiene posts";
+        } else {
+            for(post in posts){
+
+                let postDiv = document.createElement('div');
+                postDiv.classList.add('post');
+
+                let postTitle = document.createElement('h3');
+                postTitle.textContent = post.title;
+
+                let postDescription = document.createElement('p');
+                postDescription.textContent = post.postDescription;
+
+                postDiv.appendChild(postTitle);
+                postDiv.appendChild(postDescription);
+
+                postContainer.appendChild(postDiv);
+            }
+        }
+
+    }
+
+    obtenerUsuarios();
+        
+
+</script>
+</html>

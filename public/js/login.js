@@ -76,7 +76,10 @@ function loginUser(){
     })
     .then(message => message.json())
     .then(data => {
-        alert(data.message);
+        alert(data.message + data.user);
+        window.location.href = '/';
+
+        
     })
     .catch(err => console.error(err));
 

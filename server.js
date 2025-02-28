@@ -68,3 +68,7 @@ app.get('/mapa', (req,res) => {
 app.get('/create_post', (req,res) => {
     res.sendFile(path.join(__dirname, 'public', 'create.html'));
 })
+
+app.get('/admin-dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+})
