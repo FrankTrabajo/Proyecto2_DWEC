@@ -9,6 +9,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 const PORT = 3000;
+const jwt = require('jsonwebtoken');
 
 // middleware
 app.use(express.json());
@@ -78,5 +79,21 @@ app.get("/check-auth", (req, res) => {
         res.status(200).json({ logueado: true });
     }else {
         res.status(200).json({ logueado: false });
+    }
+});
+
+app.get("/check-admin", (req, res) => {
+    const token = req.cookies.authToken;
+
+    try {
+        const decode = jwt.verify(token, process.env.JWT_SECRET);
+
+        if(decode.role.includes('ROLE_ADMIN')){
+            res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+        }else{
+            res.sendFile(path.join(__dirname, 'public', 'index.html')); 
+        }
+    } catch (error) {
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
     }
 });

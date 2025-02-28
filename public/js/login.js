@@ -77,7 +77,7 @@ function loginUser(){
     .then(message => message.json())
     .then(data => {
         alert(data.message + data.user);
-        window.location.href = '/';
+        window.location.href = '/check-admin';
 
         
     })
