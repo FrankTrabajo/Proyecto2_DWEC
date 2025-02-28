@@ -93,7 +93,7 @@ function createForm(){
     inputSubmit.addEventListener('click', function(e){
         e.preventDefault();
         create(postForm);
-        window.location.href = '/new_site';
+        window.location.href = '/';
     });
 
     postForm.appendChild(labelTitle);
