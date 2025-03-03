@@ -95,6 +95,8 @@
                     botonElim.textContent = "Deshabilitar Usuario";
                     botonElim.addEventListener('click', function() {
                         deshabilitar(usuario._id);
+                        mostrarNotificacion('Usuario inactivo:' + usuario.name);
+                        window.location.reload();
                     });
                     tdEliminar.appendChild(botonElim);
                     trUser.appendChild(tdEliminar);
@@ -104,6 +106,7 @@
                     botonActivar.textContent = "Habilitar Usuario";
                     botonActivar.addEventListener('click', function (){
                         activar(usuario._id);
+                        mostrarNotificacion('Usuario activo:' + usuario.name);
                         window.location.reload();
                     });
                     tdActivar.appendChild(botonActivar);
@@ -115,6 +118,16 @@
         }
         
         
+    }
+
+    function mostrarNotificacion(mensaje){
+        Notification.requestPermission().then(permission => {
+            if(permission === "granted"){
+                new Notification(mensaje);
+            }else{
+                console.error("Permisos denegados");
+            }
+        })
     }
 
     function deshabilitar(id){
