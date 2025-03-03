@@ -85,6 +85,24 @@ function createForm(){
     inputFoto.name = 'photo';
     inputFoto.id = 'photo';
 
+    let h1Sitio = document.createElement('h1');
+    h1Sitio.textContent = "Información del sitio";
+
+    //nombre del sitio
+    let labelNombre = document.createElement('label');
+    labelNombre.textContent = "Nombre del sitio";
+    let inputNombre = document.createElement('input');
+    inputNombre.type = 'text';
+    inputNombre.name = 'nombre';
+    inputNombre.id = 'nombre';
+
+    //Descripcion
+    let labelDescripcion = document.createElement('label');
+    labelDescripcion.textContent = "Descripcion del sitio";
+    let textAreaDescripcion = document.createElement('textArea');
+    textAreaDescripcion.name = 'descripcion';
+    textAreaDescripcion.id = 'descripcion';
+
     //Submit
     let inputSubmit = document.createElement('input');
     inputSubmit.type = "submit";
@@ -93,8 +111,10 @@ function createForm(){
     inputSubmit.addEventListener('click', function(e){
         e.preventDefault();
         create(postForm);
-        window.location.href = '/';
+        console.log(postForm);
     });
+
+    postForm.appendChild(h1);
 
     postForm.appendChild(labelTitle);
     postForm.appendChild(inputTitle);
@@ -108,14 +128,22 @@ function createForm(){
     postForm.appendChild(labelFoto);
     postForm.appendChild(inputFoto);
 
+    postForm.appendChild(h1Sitio);
+
+    postForm.appendChild(labelNombre);
+    postForm.appendChild(inputNombre);
+
+    postForm.appendChild(labelDescripcion);
+    postForm.appendChild(textAreaDescripcion);
+    
     postForm.appendChild(inputSubmit);
 
     formContainer.appendChild(postForm);
-
 }
 
 createForm();
 
+//mapa Sitios
 const popup = document.getElementById("popup"); 
 const popupContent = popup.querySelector(".popup-content")
 const LONGITUD_MADRID = -3.703790;
@@ -140,7 +168,7 @@ function cargarMapa() {
         map.on('click', function(e){
             lat = e.latlng.lat;
             long = e.latlng.lng;
-            
+          
             pintarUbicacionExtra(e.latlng);
         });
 

@@ -1,3 +1,4 @@
+const Sitios = require('../models/siteModel.js'); 
 const Post = require('../models/postModel.js');
 const User = require('../models/userModel.js');
 const jsonwebtoken = require('jsonwebtoken');
@@ -50,7 +51,12 @@ const createPost = async (req, res) => {
         }
 
 
-        const { title, type, description, url } = req.body;
+        const { siteName, lat, lon, title, type, description, url } = req.body;
+        
+
+        if (!siteName || !siteLocation) {
+            return res.status(400).json({ message: "Debe proporcionar un nombre y ubicación para el sitio" });
+        }
 
         let photoPath = null;
 
@@ -69,6 +75,14 @@ const createPost = async (req, res) => {
 
         }
 
+        const sitio = await Sitios.create({
+            siteName,
+            lat,
+            lon,
+            description,
+            createdBy: usuario._id
+        });
+        await sitio.save();
 
         const post = await Post.create({
             title,
@@ -76,7 +90,8 @@ const createPost = async (req, res) => {
             description,
             photo: photoPath,
             url,
-            owner: user._id
+            owner: user._id,
+            site: sitio._id
         });
         user.posts.push(post._id);
         await user.save();

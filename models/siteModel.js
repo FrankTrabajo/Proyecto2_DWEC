@@ -10,3 +10,5 @@ const SiteSchema = mongoose.Schema({
         ref: "Post"
     }]
 })
+
+module.exports = mongoose.model("Site", SiteSchema);
