@@ -190,13 +190,36 @@
                 let postDescription = document.createElement('p');
                 postDescription.textContent = post.description;
 
+
+                let botonEliminar = document.createElement('button');
+                botonEliminar.textContent = "Eliminar Post";
+                botonEliminar.addEventListener('click', function() {
+                    eliminarPost(post._id);
+                    window.location.reload();
+                });
+
                 postDiv.appendChild(postTitle);
                 postDiv.appendChild(postDescription);
+                postDiv.appendChild(botonEliminar);
 
                 postContainer.appendChild(postDiv);
             }
         }
 
+    }
+
+    function eliminarPost(postId){
+        fetch('api/post/' + postId, {
+            method: 'delete',
+            body: {
+                id: postId
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            window.location.reload;
+        })
+        .catch(err => console.error(err));
     }
 
     obtenerUsuarios();
