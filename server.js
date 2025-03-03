@@ -48,6 +48,11 @@ app.get("/register", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'register.html'));
 });
 
+// ruta de profile
+app.get("/profile", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'profile.html'));
+});
+
 // route de post
 app.use('/api/post', postRoute);
 // route de usuarios
@@ -109,5 +114,30 @@ app.get('/check-active', (req,res) => {
         res.json({ active: decode.active });
     } catch (error) {
         res.json({ active: decode.active });
+    }
+})
+
+app.get('/get-id-user', async(req,res) => {
+    const token = req.cookies.authToken;
+    if(!token){
+        return res.status(401).json({ message: 'No autorizado, debe iniciar sesión' });
+    }
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('Token decodificado:', decoded);
+
+        if(!decoded || !decoded.userId){
+            return res.status(401).json({ message: 'Token inválido o no contiene userId' });
+        }
+
+        const user = await User.findById(decoded.userId).select('-password');
+        if(!user){
+            return res.status(401).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.json({ userId: decoded.userId });
+    } catch (error) {
+        console.error('Error al verificar el token:', error);
+        res.status(401).json({ message: 'Token inválido o expirado' });
     }
 })
