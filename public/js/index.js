@@ -12,6 +12,15 @@ function indexForm() {
     userButton.appendChild(userImg);
     botonesDiv.appendChild(userButton);
 
+    //Creamos el boton que nos lleve a la creación de un post y lugar
+    let crearButton = document.createElement("a");
+    crearButton.href = "/create_post";
+    let crearInput = document.createElement("input");
+    crearInput.type = "button";
+    crearInput.value = "Crear";
+    crearButton.appendChild(crearInput);
+    botonesDiv.appendChild(crearButton);
+
     //Creamos el boton que nos lleve al mapa
     let mapaButton = document.createElement("a");
     mapaButton.href = "/mapa";

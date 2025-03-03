@@ -1,19 +1,16 @@
 html {
-    --s: 9px; /* control the size*/
-    --c1: #3b2d38;
-    --c2: #f02475;
+    --s: 200px; /* control the size*/
+    --c1: #fff9f5;
+    --c2: #c0e1f2;
     
-    --g:#0000 66%,var(--c1) 68% 98%,#0000;
-    background:
-      radial-gradient(30% 30% at 0%   30%,var(--g))
-       var(--s) calc(9*var(--s)),
-      radial-gradient(30% 30% at 100% 30%,var(--g))
-       var(--s) calc(-1*var(--s)),
-      radial-gradient(30% 30% at 30% 100%,var(--g))
-       calc(10*var(--s)) 0,
-      radial-gradient(30% 30% at 30% 0%  ,var(--g))
-       var(--c2);
-    background-size: calc(20*var(--s)) calc(20*var(--s));
+    --_g: #0000 8%,var(--c1) 0 17%,#0000 0 58%;
+    background: 
+      linear-gradient(135deg,#0000 20.5%,var(--c1) 0 29.5%,#0000 0) 0 calc(var(--s)/4),
+      linear-gradient( 45deg,var(--_g)) calc(var(--s)/2) 0,
+      linear-gradient(135deg,var(--_g),var(--c1) 0 67%,#0000 0),        
+      linear-gradient( 45deg,var(--_g),var(--c1) 0 67%,#0000 0 83%,var(--c1) 0 92%,#0000 0),
+      var(--c2); 
+    background-size: var(--s) var(--s);
   }
 
 
@@ -61,10 +58,10 @@ input{
 }
 
 #submit{
-    background-color: #f02475;
+    background-color: #007bff;
     font-weight: bold;
     cursor: pointer;
-    background-color: #f02475;
+    background-color: #007bff;
     font-weight: bold;
     cursor: pointer;
     border-radius: 4px;
