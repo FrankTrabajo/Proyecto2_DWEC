@@ -15,8 +15,10 @@ function mostrarNotificacion(message) {
 }
 
 
-function create(postForm) {
+function create(postForm, lat, long) {
     let formData = new FormData(postForm);
+    formData.append("lat",lat);
+    formData.append("lon", long);
     fetch('/api/post/', {
         method: 'POST',
         credentials: "include",
@@ -93,15 +95,15 @@ function createForm(){
     labelNombre.textContent = "Nombre del sitio";
     let inputNombre = document.createElement('input');
     inputNombre.type = 'text';
-    inputNombre.name = 'nombre';
-    inputNombre.id = 'nombre';
+    inputNombre.name = 'siteName';
+    inputNombre.id = 'siteName';
 
     //Descripcion
     let labelDescripcion = document.createElement('label');
     labelDescripcion.textContent = "Descripcion del sitio";
     let textAreaDescripcion = document.createElement('textArea');
-    textAreaDescripcion.name = 'descripcion';
-    textAreaDescripcion.id = 'descripcion';
+    textAreaDescripcion.name = 'descriptionSite';
+    textAreaDescripcion.id = 'descriptionSite';
 
     //Submit
     let inputSubmit = document.createElement('input');
@@ -110,8 +112,7 @@ function createForm(){
     inputSubmit.value = "Crear"
     inputSubmit.addEventListener('click', function(e){
         e.preventDefault();
-        create(postForm);
-        console.log(postForm);
+        create(postForm, lat, long);
     });
 
     postForm.appendChild(h1);

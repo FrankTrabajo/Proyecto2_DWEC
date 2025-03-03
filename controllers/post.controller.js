@@ -51,10 +51,10 @@ const createPost = async (req, res) => {
         }
 
 
-        const { siteName, lat, lon, title, type, description, url } = req.body;
+        const { siteName, descriptionSite, lat, lon, title, type, description, url } = req.body;
         
 
-        if (!siteName || !siteLocation) {
+        if (!siteName || !lat || !lon) {
             return res.status(400).json({ message: "Debe proporcionar un nombre y ubicación para el sitio" });
         }
 
@@ -75,24 +75,26 @@ const createPost = async (req, res) => {
 
         }
 
-        const sitio = await Sitios.create({
-            siteName,
-            lat,
-            lon,
-            description,
-            createdBy: usuario._id
-        });
-        await sitio.save();
-
         const post = await Post.create({
             title,
             type,
             description,
             photo: photoPath,
             url,
-            owner: user._id,
-            site: sitio._id
+            owner: user._id
         });
+
+        const sitio = await Sitios.create({
+            siteName,
+            lat,
+            lon,
+            description: descriptionSite,
+            postOwner: post._id
+        });
+
+        post.site = sitio._id;
+        await post.save();
+        
         user.posts.push(post._id);
         await user.save();
 

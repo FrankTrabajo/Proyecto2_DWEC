@@ -52,6 +52,7 @@ function cargarLibrerias() {
     script.onload = () => {
         if(cargarMapa()){
             cargarDatos();
+            cargarSitios();
         }
     }
     document.head.appendChild(script);
@@ -127,8 +128,12 @@ function cargarSitios(){
     fetch("/api/site/")
     .then(response => response.json())
     .then(data => {
-        pintarNuevasUbicaciones([data.lat, data.lon], RESTO_UBICACIONES, data.siteName);
+        for(let ubicacion of data){
+            pintarSite([ubicacion.lat, ubicacion.lon],ubicacion.siteName);
+        }
+        
     })
+    .catch(err => console.error(err));
 }
 
 document.addEventListener("DOMContentLoaded", function () { 

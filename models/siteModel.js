@@ -5,10 +5,10 @@ const SiteSchema = mongoose.Schema({
     lat: {type: String, required: true},
     lon: {type: String, required: true},
     description: {type: String, required: false},
-    postOwner: [{
+    postOwner: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: "Post"
-    }]
-})
+    }
+});
 
 module.exports = mongoose.model("Site", SiteSchema);
