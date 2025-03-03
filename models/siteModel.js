@@ -1,5 +1,6 @@
+//importamos mongoose
 const mongoose = require('mongoose');
-
+//definimos el esquema del sitio y decimos como queremos que sean sus campos
 const SiteSchema = mongoose.Schema({
     siteName: {type: String, required: true},
     lat: {type: String, required: true},
@@ -10,5 +11,5 @@ const SiteSchema = mongoose.Schema({
         ref: "Post"
     }
 });
-
+//por ultimo exportamos el modelo
 module.exports = mongoose.model("Site", SiteSchema);

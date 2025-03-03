@@ -1,5 +1,6 @@
+//importamos mongoose
 const mongoose = require('mongoose');
-
+//definimos el esquema del post y decimos como queremos que sean sus campos
 const PostSchema = mongoose.Schema({
     title: {type: String, required: true},
     type: {type: String, required: true},
@@ -16,5 +17,5 @@ const PostSchema = mongoose.Schema({
         ref: "Site"
     }
 })
-
+//por ultimo exportamos el modelo
 module.exports = mongoose.model("Post", PostSchema);

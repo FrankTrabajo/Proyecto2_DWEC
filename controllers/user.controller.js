@@ -1,11 +1,20 @@
+//Importamos los modelos de la base de datos
 const User = require('../models/userModel.js');
+//Importamos Express para manejar las solicitudes y respuestas HTTP
 const express = require('express');
+//Importamos  las librerías que nos van a servir para la autenticación y el manejo de archivos
 const bcrypt = require('bcryptjs');
 const jsonwebtoken = require('jsonwebtoken');
 const dotenv = require('dotenv');
-
+//Cargamos las variables de entorno desde el archivo .env
 dotenv.config();
 //app.use(express.static('public'));
+
+/**
+ * Funcion para obtener todos los usuarios
+ * @param {request} req 
+ * @param {response} res 
+ */
 
 const getUsers =  async (req,res) => {
     try {
@@ -24,6 +33,11 @@ const getUsers =  async (req,res) => {
     }
 };
 
+/**
+ * Funcion para obtener un usuario en especifico 
+ * @param {request} req 
+ * @param {response} res 
+ */
 const getUser = async(req,res) => {
     try {
         const { id } = req.params;
@@ -34,6 +48,11 @@ const getUser = async(req,res) => {
     }
 };
 
+/**
+ * Funcion para crear un nuevo usuario
+ * @param {request} req 
+ * @param {response} res 
+ */
 const createUser = async (req,res) => {
     try {
 
@@ -62,6 +81,11 @@ const createUser = async (req,res) => {
     }
 };
 
+/**
+ * Funcion para actualizar un usuario en especifico
+ * @param {request} req 
+ * @param {response} res 
+ */
 const updateUser = async (req,res) => {
     try {
         const { id } = req.params;
@@ -76,6 +100,11 @@ const updateUser = async (req,res) => {
     }
 };
 
+/**
+ * Funcion para borrar un usuario en especifico
+ * @param {request} req 
+ * @param {response} res 
+ */
 const deleteUser = async (req,res) => {
     try {
         const { id } = req.params;
@@ -89,8 +118,12 @@ const deleteUser = async (req,res) => {
     }
 };
 
-
-//Aqui crearemos el token de usuario de cuando se logea
+/**
+ * Funcion para crear el token de usuario de cuando se logea 
+ * @param {request} req 
+ * @param {response} res 
+ */
+ 
 const loginUser = async (req,res) => {
     try {
         const {email, password} = req.body;
@@ -118,12 +151,23 @@ const loginUser = async (req,res) => {
         res.status(500).json({message: "Error en el login?" + error.message});
     }
 }
-//Aqui hacemos el logout, eliminamos el token de sesion 
+
+/**
+ * Funcion para hacer el logout, eliminamos el token de sesion 
+ * @param {request} req 
+ * @param {response} res 
+ */
 const logoutUser = async(req,res) => {
     //Tiene que tener el mismo nombre de la cookie creada en el login
     res.clearCookie('authToken')
     res.json({message: "Sesion cerrada"});
 }
+
+/**
+ * Funcion para activar la cuenta de un usuario en especifico.
+ * @param {request} req 
+ * @param {response} res 
+ */
 
 const active = async (req,res) => {
     const { id } = req.params;
@@ -135,6 +179,11 @@ const active = async (req,res) => {
     res.status(200);
 }
 
+/**
+ * Funcion para desactivar la cuenta de un usuario en especifico.
+ * @param {request} req 
+ * @param {response} res 
+ */
 const inactive = async (req,res) => {
     const { id } = req.params;
     let user = await User.findByIdAndUpdate(id,{ active: false }, { new: true } );
@@ -146,6 +195,7 @@ const inactive = async (req,res) => {
 }
 
 
+//exportamos las funciones para poderlas usar en otros sitio
 module.exports = {
     getUsers,
     getUser,
