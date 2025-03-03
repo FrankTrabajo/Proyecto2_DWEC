@@ -37,15 +37,12 @@ function loginForm(){
     formContainer.appendChild(form);
 
     let p = document.createElement('p');
-    let pError = document.createElement('p');
-    pError.classList.add('hide');
-    pError.id="pError";
+
     let a = document.createElement('a');
     p.textContent = '¿Aún no tienes cuenta?';
     a.textContent = 'Registrarse';
     a.href = '/register';
     p.appendChild(a);
-    formContainer.appendChild(pError);
     formContainer.appendChild(p);
 
 }
@@ -60,9 +57,7 @@ function loginUser(){
     const password = document.getElementById('password').value;
     const pError = document.getElementById('pError');
     if(!email || !password){
-        pError.classList.add('error');
-        pError.classList.remove('hide');
-        pError.textContent = "Todos los campos son obligatorios";
+        mostrarError("Todos los campos son obligatorios");
     }
 
     fetch("/user/login", {
@@ -72,15 +67,56 @@ function loginUser(){
         },
         body: JSON.stringify({
             email, password
-        })
+        }),
+        credentials: 'include'
     })
     .then(message => message.json())
     .then(data => {
-        alert(data.message + data.user);
-        window.location.href = '/check-admin';
+        if(data.message === 'Login correcto'){
+            fetch("/check-admin")
+            .then(response => response.json())
+            .then(data => {
+                if(data.admin){
+                    window.location.href = "/admin-dashboard";
+                }else{
+                    fetch('/check-active')
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.active){
+                            window.location.href = "/";
+                        }else{
+                            //No se loguea y aparece un mensaje de error de usuario inactivo 
+                            mostrarError("Tu cuenta esta inactiva. Contacta con el aministrador. (admin@correo.com)");
+                            return fetch('/user/logout', { 
+                                    method: "POST",
+                                    credentials: 'include'
+                                
+                            }).then(response => response.json())
+                            .then(data => {
+                                console.log("Sesion cerrada automaticamente");
+                            });
+                        }
+                    })
+                    
+                }
+            })
+        }else{
+            mostrarError("Error al iniciar sesion, compruebe su contraseña y su email");
+            return;
+        }
+
 
         
     })
     .catch(err => console.error(err));
 
+}
+
+function mostrarError(mensaje){
+
+    let pError = document.getElementById('pError');
+    pError.classList.remove('hide');
+    pError.classList.add('error');
+    pError.textContent = mensaje;
+    
 }

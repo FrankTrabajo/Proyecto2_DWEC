@@ -108,7 +108,7 @@ const loginUser = async (req,res) => {
         }
         
         //Crear TOKEN
-        const token = jsonwebtoken.sign({userId: user._id.toString(), email: user.email, role: user.role}, process.env.JWT_SECRET, {expiresIn: '1h'});
+        const token = jsonwebtoken.sign({userId: user._id.toString(), email: user.email, role: user.role, active: user.active}, process.env.JWT_SECRET, {expiresIn: '1h'});
 
         //Enviar el token como cookie
         res.cookie('authToken', token, {httpOnly:true, secure: false, maxAge: 3600000});
@@ -144,6 +144,7 @@ const inactive = async (req,res) => {
     }
     res.status(200);
 }
+
 
 module.exports = {
     getUsers,

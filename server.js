@@ -37,7 +37,7 @@ app.listen(PORT, () => {
     console.log(`Servidor ejecutado en http://localhost:${PORT}`);
 });
 
-// rutas de Login
+// ruta de Login
 app.get("/login", (req,res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
@@ -47,33 +47,35 @@ app.get("/register", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'register.html'));
 });
 
+// route de post
 app.use('/api/post', postRoute);
+// route de usuarios
 app.use('/user', userRoute);
 
+// Ruta principal
 app.get('/', (req,res) => {
     //Aqui debe de aparecer el index
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Ruta para ir al mapa
 app.get('/mapa', (req,res) => {
     //Aqui debe de aparecer el index
     res.sendFile(path.join(__dirname, 'public', 'mapa.html'));
 });
 
-app.get('/mapa', (req,res) => {
-    //Aqui debe de aparecer el index
-    res.sendFile(path.join(__dirname, 'public', 'mapaSitios.html'));
-});
 
-
+// Ruta para crear un post nuevo, solo la vista
 app.get('/create_post', (req,res) => {
     res.sendFile(path.join(__dirname, 'public', 'create.html'));
 })
 
+// Ruta para ir a la pagina del usuario administrador
 app.get('/admin-dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 })
 
+// Ruta para comprobar si el usuario está logueado o no
 app.get("/check-auth", (req, res) => {
     if(req.cookies.authToken) {
         res.status(200).json({ logueado: true });
@@ -82,18 +84,27 @@ app.get("/check-auth", (req, res) => {
     }
 });
 
+// Ruta para comprobar si el usuario logueado es admin o no
 app.get("/check-admin", (req, res) => {
     const token = req.cookies.authToken;
 
     try {
         const decode = jwt.verify(token, process.env.JWT_SECRET);
 
-        if(decode.role.includes('ROLE_ADMIN')){
-            res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-        }else{
-            res.sendFile(path.join(__dirname, 'public', 'index.html')); 
-        }
+        res.json({ admin: decode.role.includes('ROLE_ADMIN')});
+
     } catch (error) {
-        res.sendFile(path.join(__dirname, 'public', 'index.html'));
+        res.json({ admin: false});
     }
 });
+
+//Ruta para comprobar si el usuario esta activo o no
+app.get('/check-active', (req,res) => {
+    const token = req.cookies.authToken;
+    try {
+        const decode = jwt.verify(token, process.env.JWT_SECRET);
+        res.json({ active: decode.active });
+    } catch (error) {
+        res.json({ active: decode.active });
+    }
+})
