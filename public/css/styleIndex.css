@@ -2,15 +2,15 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #aaaaf9;
+    background-color: #d4d4ff;
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
 
 img {
-    width: 20px;
-    height: 20px;
+    width: 35px;
+    height: 35px;
 }  
 
 header {
@@ -23,6 +23,7 @@ justify-content: space-between;
 position: sticky;
 top: 0;
 z-index: 1000;
+box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2); 
 }
 
 header h1 {
@@ -31,9 +32,17 @@ font-size: 24px;
 }
 
 #dp{
-    background-color: yellow;
+    background-color: white;
     padding: 5px;
     margin-bottom: 10px;
+    border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+#dp img{
+    width: 200px;
+    height: 200px;
 }
 
 #main{
@@ -57,6 +66,68 @@ font-size: 24px;
 #postContainer{
     flex:1;
     margin: 20px;
-    background-color: orange;
     overflow-y: auto;
+}
+
+.botones {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.botones a {
+    text-decoration: none;
+}
+
+.botones input[type="button"],
+.botones button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.botones input[type="button"]:hover,
+.botones button:hover {
+    background-color: #0056b3;
+}
+
+.botones button a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Barra de búsqueda */
+.buscar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.buscar input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    flex-grow: 1;
+}
+
+.buscar img {
+    cursor: pointer;
+}
+
+#logoutbutton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#logoutbutton:hover {
+    background-color: #c82333;
 }
