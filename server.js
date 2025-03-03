@@ -5,6 +5,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const postRoute = require('./routes/postRoute.js');
 const userRoute = require('./routes/userRoute.js');
+const siteRoute = require('./routes/sitioRoute.js');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
@@ -51,6 +52,8 @@ app.get("/register", (req, res) => {
 app.use('/api/post', postRoute);
 // route de usuarios
 app.use('/user', userRoute);
+// route de sitios
+app.use('/api/site', siteRoute);
 
 // Ruta principal
 app.get('/', (req,res) => {

@@ -21,7 +21,6 @@ function cargarMapa() {
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-        pintarNuevasUbicaciones(lat, long);
         return true;
     } catch (error) {
         return false;
@@ -29,26 +28,6 @@ function cargarMapa() {
   
 }
 let lat, long;
-function pintarNuevasUbicaciones(lat, long){
-    map.on('click', function(e){
-        lat = e.latlng.lat;
-        long = e.latlng.lng;
-        
-        pintarUbicacionExtra(e.latlng);
-    });
-}  
-        
-
-function pintarUbicacionExtra(coords){
-    if(coordenadas){
-        map.removeLayer(coordenadas);
-    }
-
-    coordenadas = L.marker(coords)
-    .addTo(map);
-
-    console.log(coords);
-}
 
 
 
@@ -91,11 +70,32 @@ function pintarUbicacion(coords,icono, titulo) {
     .bindPopup()
     .addTo(map);
 
+    marcador.bindPopup(titulo);
+
     marcador.on("mouseover", function(){
-        titulo
+        marcador.openPopup();
     });
 
+    marcador.on('mouseout', function(){
+        marcador.closePopup();
+    })
+}
 
+function pintarSite(coords, titulo) {
+
+    let marcador = L.marker(coords)
+    .bindPopup()
+    .addTo(map);
+
+    marcador.bindPopup(titulo);
+
+    marcador.on("mouseover", function(){
+        marcador.openPopup();
+    });
+
+    marcador.on('mouseout', function(){
+        marcador.closePopup();
+    })
 }
 
 
@@ -121,6 +121,14 @@ function cargarDatos(){
     };
 
     xhr.send();
+}
+
+function cargarSitios(){
+    fetch("/api/site/")
+    .then(response => response.json())
+    .then(data => {
+        pintarNuevasUbicaciones([data.lat, data.lon], RESTO_UBICACIONES, data.siteName);
+    })
 }
 
 document.addEventListener("DOMContentLoaded", function () { 

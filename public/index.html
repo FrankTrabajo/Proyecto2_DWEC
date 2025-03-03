@@ -24,8 +24,7 @@
     </header>
     
     <main id="main">
-        <div class="aside">
-            <p>vivan los domingos</p>
+        <div class="aside" id="aside">
         </div>
         <!-- Aqui los posts -->
         <div id="postContainer">
@@ -70,7 +69,11 @@
 
     fetch("/api/post/", {method:"get"})
         .then(response => response.json())
-        .then(datos => {console.log(datos), pintarPOST(datos);})
+        .then(datos => {
+            console.log(datos);
+            pintarPOST(datos);
+            mostrarTipo(datos);
+        })
         .catch(err => console.error(err));
     
     function pintarPOST (datos){
@@ -79,7 +82,7 @@
             for (let i in datos){
                 if(datos[i]['photo']!=null){
                     main.innerHTML += `
-                    <div id= "dp">
+                    <div id= "dp" class="${datos[i]['type']} dp">
                         <p>${datos[i]['title']}</p>
                         <p>${datos[i]['description']}</p>
                         <img src="${datos[i]['photo']}"/>
@@ -88,7 +91,7 @@
                 `; 
                 }else{
                     main.innerHTML += `
-                    <div id= "dp">
+                    <div id= "dp" class="${datos[i]['type']} dp">
                         <p>${datos[i]['title']}</p>
                         <p>${datos[i]['description']}</p>
                         <br>
@@ -99,5 +102,46 @@
             }
         }
     }
+
+    function mostrarTipo(data){
+
+        let tipos = new Set();
+
+        for(let dato of data){
+            if(dato.type){
+                tipos.add(dato.type);
+            }
+        }
+
+        let divAside = document.getElementById('aside');
+        let ul = document.createElement('ul');
+        let litTodos = document.createElement('li');
+        litTodos.textContent = "Todos los posts";
+        litTodos.addEventListener('click', function(){
+            filtrar('todos');
+        })
+        ul.appendChild(litTodos);
+        for(let tipo of tipos){
+            let li = document.createElement('li');
+            li.textContent = tipo;
+            li.addEventListener('click', function () {
+                filtrar(tipo);
+            })
+            ul.appendChild(li);
+        }
+        divAside.appendChild(ul);
+    }
+
+    function filtrar(tipoDePost){
+        let tiposPost = document.getElementsByClassName('dp');
+        for(let i = 0 ; i < tiposPost.length ; i++){
+            if(tiposPost[i].classList.contains(tipoDePost) || tipoDePost == 'todos'){
+                tiposPost[i].style.display ="block";
+            }else {
+                tiposPost[i].style.display ="none";
+            }
+        }
+    }
+
 </script>
 </html>
