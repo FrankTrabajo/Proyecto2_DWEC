@@ -113,6 +113,7 @@ function createForm(){
     inputSubmit.addEventListener('click', function(e){
         e.preventDefault();
         create(postForm, lat, long);
+        window.location.href = '/';
     });
 
     postForm.appendChild(h1);
