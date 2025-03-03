@@ -155,7 +155,6 @@ function cargarMapa() {
     }
   
 }
-
 function pintarUbicacionExtra(coords){
     if(coordenadas){
         map.removeLayer(coordenadas);
@@ -166,5 +165,34 @@ function pintarUbicacionExtra(coords){
 
     console.log(coords);
 }
+
+
+function cargarLibrerias() {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+    link.integrity = "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=";
+    link.crossOrigin="";
+    document.head.appendChild(link);
+
+    // Crear e insertar el script de Leaflet
+    const script = document.createElement("script");
+    script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+    script.integrity = "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=";
+    script.crossOrigin="";
+    script.onload = () => {
+        cargarMapa();
+    }
+    document.head.appendChild(script);
+}
+
+document.addEventListener("DOMContentLoaded", function () { 
+    ///compruebo si tengo conexion a una red
+    if(navigator.onLine){
+       cargarLibrerias();
+    }else{
+        agregarNotificacion("ERROR:no se han cargado correctamente las librerias");
+    }
+});
 
 
