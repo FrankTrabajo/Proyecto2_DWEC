@@ -1,5 +1,6 @@
+//importamos mongoose
 const mongoose = require('mongoose');
-
+//definimos el esquema del usuario y decimos como queremos que sean sus campos
 const UserSchema = mongoose.Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
@@ -12,7 +13,7 @@ const UserSchema = mongoose.Schema({
         ref: "Post"
     }]
 });
-
+//por ultimo exportamos el modelo
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

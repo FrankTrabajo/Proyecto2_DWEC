@@ -1,14 +1,22 @@
+//Importamos los modelos de la base de datos 
 const Sitios = require('../models/siteModel.js'); 
 const User = require('../models/userModel.js');
 const Post = require('../models/postModel.js');  
+
+//Importamos  las librerías que nos van a servir para la autenticación y el manejo de archivos
 const jsonwebtoken = require('jsonwebtoken');   
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs'); 
 
+//Cargamos las variables de entorno desde el archivo .env
 dotenv.config();
 
-//para obtener todos los sitios
+/**
+ * Funcion  para obtener todos los sitios
+ * @param {request} req 
+ * @param {response} res 
+ */
 const getSitios = async(req, res) => {
     try {
         const sitios = await Sitios.find({});
@@ -18,7 +26,12 @@ const getSitios = async(req, res) => {
     }
 };
 
-//obtener todos los post de un sitio en especifico
+/**
+ * Funcion para obtener todos los post de un sitio en especifico
+ * @param {request} req 
+ * @param {response} res 
+ */
+
 const getSitio = async (req, res) => {
     try {
         const { siteId } = req.params;    
@@ -29,8 +42,13 @@ const getSitio = async (req, res) => {
     }
 };
 
+/**
+ * Funcion para crear un sitio
+ * @param {request} req 
+ * @param {response} res 
+ */
 
-//crear un sitio
+
 const createSitio = async (req, res) => {
     try {
         const token = req.cookies.authToken;
@@ -102,7 +120,12 @@ const createSitio = async (req, res) => {
     }
 };
 
-//actualizar sitio
+/**
+ * Funcion para actualizar sitio
+ * @param {request} req 
+ * @param {response} res 
+ */
+
 const updateSitio = async (req, res)=>{
     try {
         const { id } = req.params;
@@ -117,7 +140,12 @@ const updateSitio = async (req, res)=>{
     }
 };
 
-//borrar sitio
+/**
+ * Funcion para borrar sitio
+ * @param {request} req 
+ * @param {response} res 
+ */
+
 const deleteSitio = async (req, res) =>{
     try {
         const { id } = req.params;
@@ -131,6 +159,7 @@ const deleteSitio = async (req, res) =>{
     }
 };
 
+//exportamos las funciones para poderlas usar en otros sitio
 module.exports = {
     getSitios,
     getSitio,

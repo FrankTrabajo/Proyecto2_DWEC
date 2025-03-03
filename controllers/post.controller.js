@@ -1,14 +1,22 @@
+//Importamos los modelos de la base de datos 
 const Sitios = require('../models/siteModel.js'); 
 const Post = require('../models/postModel.js');
 const User = require('../models/userModel.js');
+
+//Importamos  las librerías que nos van a servir para la autenticación y el manejo de archivos
 const jsonwebtoken = require('jsonwebtoken');
 const dotenv = require('dotenv');
-
 const path = require('path');
 const fs = require('fs');
+
+//Cargamos las variables de entorno desde el archivo .env
 dotenv.config();
 
-
+/**
+ * Funcion para obtener todos los post
+ * @param {request} req 
+ * @param {response} res 
+ */
 const getPosts = async (req, res) => {
     try {
         const posts = await Post.find({});
@@ -18,6 +26,12 @@ const getPosts = async (req, res) => {
     }
 };
 
+
+/**
+ * Funcion para obtener todos los post de un usuario en especifico 
+ * @param {request} req 
+ * @param {response} res 
+ */
 const getPost = async (req, res) => {
     try {
         const { id } = req.params;
@@ -28,6 +42,13 @@ const getPost = async (req, res) => {
     }
 };
 
+
+/**
+ * Funcion para crear un nuevo post creando a su vez el sitio haciendo que 
+ * el post.site sea el id del sitio creado anteriormente
+ * @param {request} req 
+ * @param {response} res 
+ */
 const createPost = async (req, res) => {
     try {
         //Aqui leo el token de la cookie
@@ -104,6 +125,12 @@ const createPost = async (req, res) => {
     }
 };
 
+
+/**
+ * Funcion para actualizar un post en especifico 
+ * @param {request} req 
+ * @param {response} res 
+ */
 const updatePost = async (req, res) => {
     try {
         const { id } = req.params;
@@ -118,6 +145,11 @@ const updatePost = async (req, res) => {
     }
 };
 
+/**
+ * Funcion para eliminar un post en especifico 
+ * @param {request} req 
+ * @param {response} res 
+ */
 const deletePost = async (req, res) => {
     try {
         const { id } = req.params;
@@ -131,6 +163,7 @@ const deletePost = async (req, res) => {
     }
 };
 
+//exportamos las funciones para poderlas usar en otros sitio
 module.exports = {
     getPost,
     getPosts,
