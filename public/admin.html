@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
     <style>
+        /* Estilos para la tabla de usuarios */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -23,6 +24,7 @@
         #postsContainer {
             margin-top: 20px;
         }
+         /* Estilos para cada post */
         .post {
             margin-bottom:15px;
             padding: 10px;
@@ -57,10 +59,14 @@
     </footer>
 </body>
 <script defer>
-    
+    //titulo de la pagina de admin
     let h1Title = document.getElementById('title');
     h1Title.textContent = "Bienvenido Usuario Administrador";
 
+    /**
+     * Funcion para crear una tabla con la lista de usuarios y sus correos.
+     * y q permite habilitar o deshabilitar usuarios y ver sus posts.
+    */
     function createTable(usuarios){
         let table = document.getElementById('table');
         let tr = document.createElement('tr');
@@ -120,6 +126,9 @@
         
     }
 
+    /**
+     * Funcion que nos muestra una funcion
+     * */
     function mostrarNotificacion(mensaje){
         Notification.requestPermission().then(permission => {
             if(permission === "granted"){
@@ -130,6 +139,9 @@
         })
     }
 
+    /**
+     * Funcion para deshabilitar un usuario
+     */
     function deshabilitar(id){
         fetch(`/user/inactive/${id}`, { method: 'PUT'})
         .then(response => response.json())
@@ -138,6 +150,10 @@
         })
         .catch(err => console.error(err));
     }
+
+    /**
+     * Funcion para activar un usuario
+     */
     function activar(id){
         fetch(`/user/active/${id}`, { method: 'PUT'})
         .then(response => response.json())
@@ -148,6 +164,9 @@
         .catch(err => console.error(err));
     }
 
+    /**
+     * funcion que obtiene los usuarios y los muestra en forma de tabla
+     * */
     function obtenerUsuarios(){
         fetch('/user/', {
             method: 'GET',
@@ -160,6 +179,9 @@
         .catch(err => console.error(err));
     }
 
+    /**
+     * Obtiene los posts de un usuario específico 
+     */
     function obtenerPosts(usuario){
         fetch(`/api/post/${usuario}`, {
             method: 'GET'
@@ -171,6 +193,9 @@
         .catch(err => console.error(err));
     }
 
+    /**
+     * Muestra los posts de un usuario 
+     */
     function mostrarPost(posts){
         console.log(posts);
         let postContainer = document.getElementById('post-container');
@@ -208,6 +233,9 @@
 
     }
 
+    /**
+     * funcion que elimina un post
+     */
     function eliminarPost(postId){
         fetch('api/post/' + postId, {
             method: 'delete',
@@ -225,6 +253,9 @@
     obtenerUsuarios();
         
 
+    /**
+     * Funcion para cerrar la sesión del usuario .
+     */
     function logout(){
         fetch('/user/logout', {
             method: 'POST',
