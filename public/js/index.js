@@ -6,7 +6,10 @@ function indexForm() {
 
     //Creamos el boton que nos lleve a nuestro usuario
     let userButton = document.createElement("a");
-    userButton.href = "/profile";
+    userButton.id = 'profile';
+    userButton.addEventListener('click', function() {
+        obtenerId();
+    });
     let userImg = document.createElement("img");
     userImg.src = "uploads/userDefault.png";
     userButton.appendChild(userImg);
@@ -175,13 +178,15 @@ function checkAuth(){
             if (data.logueado) {
                 document.getElementById('loginbutton').style.display = 'none';
                 document.getElementById('registerbutton').style.display = 'none';
-                document.getElementById('crearButton').style.display = 'inline-block';
                 document.getElementById('logoutbutton').style.display = 'inline-block';
+                document.getElementById('crearButton').style.display = 'inline-block';
+                document.getElementById('profile').style.display = 'inline-block';
             } else {
                 document.getElementById('loginbutton').style.display = 'inline-block';
                 document.getElementById('registerbutton').style.display = 'inline-block';
-                document.getElementById('crearButton').style.display = 'none';
                 document.getElementById('logoutbutton').style.display = 'none';
+                document.getElementById('crearButton').style.display = 'none';
+                document.getElementById('profile').style.display = 'none';
             }
         })
         .catch(err => console.error('Error al verificar la autenticación:', err));
