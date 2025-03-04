@@ -1,3 +1,7 @@
+/**
+ * Funcion para permitir mostrar una notificación al usuario
+ * @param {string} message 
+ */
 function mostrarNotificacion(message) {
     if (Notification.permission === 'granted') {
         new Notification("Post creado", {
@@ -14,6 +18,12 @@ function mostrarNotificacion(message) {
     } 
 }
 
+/**
+ * Función para enviar un formulario y crear un nuevo post
+ * @param {form} postForm 
+ * @param {number} lat 
+ * @param {number} long 
+ */
 
 function create(postForm, lat, long) {
     let formData = new FormData(postForm);
@@ -39,6 +49,9 @@ function create(postForm, lat, long) {
         .catch(err => console.error(err));
 }
 
+/**
+ * Funcion que nos crear el formulario para crear un post y un nuevo sitiio
+ */
 function createForm(){
     let formContainer = document.getElementById('form-container');
     let h1 = document.createElement('h1');
@@ -156,6 +169,10 @@ const RESTO_UBICACIONES= `https://cdn-icons-png.flaticon.com/512/252/252025.png`
 const mapContainer = document.getElementById("map");
 let map = null;
 
+/**
+ * Función para mostrar un popup con información proporcionada
+ * @param {string} infoHTML 
+ */
 function mostrarPopup(infoHTML) {
     popupContent.innerHTML = infoHTML; // Insertar contenido en el popup
     popup.style.display = "flex"; // Mostrar popup
@@ -163,6 +180,11 @@ function mostrarPopup(infoHTML) {
 
 let coordenadas = null;
 let lat, long;
+
+/**
+ * Función para cargar el mapa 
+ * @returns {boolean} 
+ */
 function cargarMapa() {
     try {
         map = L.map('map').setView([LATITUD_MADRID,LONGITUD_MADRID], ZOOM_PREDETERMINADO);
@@ -185,6 +207,11 @@ function cargarMapa() {
     }
   
 }
+
+/**
+ * Funcion para pintar las coordenadas del sitio en el que ha hecho click el usuario
+ * @param {array} coords 
+ */
 function pintarUbicacionExtra(coords){
     if(coordenadas){
         map.removeLayer(coordenadas);
@@ -197,6 +224,9 @@ function pintarUbicacionExtra(coords){
 }
 
 
+/**
+ * Función para cargar las librerías de Leaflet 
+ */
 function cargarLibrerias() {
     const link = document.createElement("link");
     link.rel = "stylesheet";
@@ -216,6 +246,7 @@ function cargarLibrerias() {
     document.head.appendChild(script);
 }
 
+//esto hace que se ejecute esto nada más cargar la pagina
 document.addEventListener("DOMContentLoaded", function () { 
     ///compruebo si tengo conexion a una red
     if(navigator.onLine){

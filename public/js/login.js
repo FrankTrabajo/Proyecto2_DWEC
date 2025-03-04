@@ -1,3 +1,6 @@
+/**
+ * Funcion que nos crea el formulario de login
+ */
 function loginForm(){
     let formContainer = document.getElementById('form-container');
     let h1Login = document.createElement('h1');
@@ -50,7 +53,10 @@ function loginForm(){
 
 loginForm();
 
-
+/**
+ * Función que  nos envía los datos del login al servidor y 
+ * nos permite manejar la autenticación del usuario.
+ */
 function loginUser(){
 
     const email = document.getElementById('email').value;
@@ -112,6 +118,10 @@ function loginUser(){
 
 }
 
+/**
+ * Funcion que nos muestra un mensaje de error si es que lo hay 
+ * @param {string} mensaje 
+ */
 function mostrarError(mensaje){
 
     let pError = document.getElementById('pError');

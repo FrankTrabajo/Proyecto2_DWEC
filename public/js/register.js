@@ -1,5 +1,7 @@
 
-
+/**
+ * Funcion crear el formulario del registro
+ */
 function registerForm(){
     //nombre, email y password
 
@@ -66,7 +68,9 @@ function registerForm(){
 
 registerForm();
 
-
+/**
+ * Función para registrar un nuevo usuario
+ */
 function registrar() {
     // Aqui tenemos que llamar al evento de crear usuario
     fetch("/user/", {

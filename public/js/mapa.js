@@ -8,12 +8,21 @@ const RESTO_UBICACIONES= `https://cdn-icons-png.flaticon.com/512/252/252025.png`
 const mapContainer = document.getElementById("map");
 let map = null;
 
+/**
+ * Función para mostrar un popup con información proporcionada
+ * @param {string} infoHTML 
+ */
 function mostrarPopup(infoHTML) {
     popupContent.innerHTML = infoHTML; // Insertar contenido en el popup
     popup.style.display = "flex"; // Mostrar popup
 }
 
 let coordenadas = null;
+
+/**
+ * Función para cargar el mapa 
+ * @returns {boolean} 
+ */
 function cargarMapa() {
     try {
         map = L.map('map').setView([LATITUD_MADRID,LONGITUD_MADRID], ZOOM_PREDETERMINADO);
@@ -27,11 +36,13 @@ function cargarMapa() {
     }
   
 }
+
 let lat, long;
 
 
-
-
+/**
+ * Función para cargar las librerías de Leaflet 
+ */
 
 function cargarLibrerias() {
     const link = document.createElement("link");
@@ -58,6 +69,12 @@ function cargarLibrerias() {
     document.head.appendChild(script);
 }
 
+/**
+ * Funcion para pintar la coordenadas que recojemos de la api
+ * @param {array} coords 
+ * @param {string} icono 
+ * @param {string} titulo 
+ */
 function pintarUbicacion(coords,icono, titulo) {
     const iconoPersonalizado = L.icon({
         iconUrl: icono,
@@ -82,6 +99,11 @@ function pintarUbicacion(coords,icono, titulo) {
     })
 }
 
+/**
+ * Funcion para pintar las coordenadas del sitio que pinta el usuario
+ * @param {array} coords 
+ * @param {string} titulo 
+ */
 function pintarSite(coords, titulo) {
 
     let marcador = L.marker(coords)
@@ -100,7 +122,9 @@ function pintarSite(coords, titulo) {
 }
 
 
-
+/**
+ * Funcion que carga los datos de la api y los pinta en el mapa
+ */
 function cargarDatos(){
     const xhr = new XMLHttpRequest();
     xhr.open("GET" , UBICACION , true);
@@ -124,6 +148,9 @@ function cargarDatos(){
     xhr.send();
 }
 
+/**
+ * Función para obtener sitios de la API  y mostrarlos en el mapa
+ */
 function cargarSitios(){
     fetch("/api/site/")
     .then(response => response.json())
@@ -136,6 +163,7 @@ function cargarSitios(){
     .catch(err => console.error(err));
 }
 
+//esto hace que se ejecute esto nada más cargar la pagina
 document.addEventListener("DOMContentLoaded", function () { 
     ///compruebo si tengo conexion a una red
     if(navigator.onLine){
