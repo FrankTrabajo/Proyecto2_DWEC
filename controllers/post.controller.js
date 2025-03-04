@@ -9,6 +9,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
 const { default: mongoose } = require('mongoose');
+const siteModel = require('../models/siteModel.js');
 
 //Cargamos las variables de entorno desde el archivo .env
 dotenv.config();
@@ -36,7 +37,7 @@ const getPosts = async (req, res) => {
 const getPost = async (req, res) => {
     try {
         const { id } = req.params;
-        const post = await Post.find({ owner: id });
+        const post = await Post.findById(id);
         res.status(200).json(post);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -140,7 +141,7 @@ const updatePost = async (req, res) => {
             res.status(404).json({ message: "Post not found" });
         }
         const updatePost = await Post.findById(id);
-        res.status(200).json(updatePost);
+        res.status(200);
     } catch (error) {
         req.status(500).json({ message: error.message });
     }
@@ -154,10 +155,9 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
     try {
         const { id } = req.params;
-        const site = await Site.findByIdAndDelete({
-            postOwner: id
-        });
+        const site = await Sitios.findOneAndDelete({ postOwner: id });
         const post = await Post.findByIdAndDelete(id);
+
         if (!post || !site) {
             res.status(404).json({ message: "Post o sitio no encontrado" });
         }

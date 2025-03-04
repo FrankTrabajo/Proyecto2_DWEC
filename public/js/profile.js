@@ -24,7 +24,7 @@ function profileForm(data) {
     buttonCrearPost.textContent = "Crear nuevo post";
     buttonCrearPost.addEventListener('click', function() {
         window.location.href = "/create_post";
-    })
+    });
 
     let volverIndex = document.createElement("button");
     volverIndex.id = "volverIndex";
@@ -78,15 +78,25 @@ function pintarPOST(datos){
         let imgPost = document.createElement('img');
         imgPost.src = datos.photo;
 
+        let buttonModificar = document.createElement('button');
+        buttonModificar.textContent = "Modificar post";
+        buttonModificar.addEventListener('click', function (){
+            window.location.href = `/post/update?id=${datos._id}`;
+        });
+
 
 
         postDiv.appendChild(pTitle);
         postDiv.appendChild(pDescription);
         postDiv.appendChild(imgPost);
+        postDiv.appendChild(buttonModificar);
         divPosts.appendChild(postDiv);
     }
 }
 
+function redirectMod(idPost){
+
+}
 
 
 

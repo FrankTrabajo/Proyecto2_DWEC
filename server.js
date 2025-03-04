@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 const PORT = 3000;
 const jwt = require('jsonwebtoken');
+const User = require('./models/userModel.js');
 
 // middleware
 app.use(express.json());
@@ -140,4 +141,9 @@ app.get('/get-id-user', async(req,res) => {
         console.error('Error al verificar el token:', error);
         res.status(401).json({ message: 'Token inválido o expirado' });
     }
-})
+});
+
+
+app.get("/post/update", async(req,res) => {
+    res.sendFile(path.join(__dirname, 'public', 'update.html'));
+});

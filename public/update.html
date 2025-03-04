@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Post</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .barra-de-arriba{
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            padding: 15px;
+        }
+
+        .barra-de-arriba .botones input {
+            background-color: white;
+            color: #007bff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .barra-de-arriba .botones input:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .form-container{
+            background: white;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        form{
+            display: flex;
+            flex-direction: column;
+        }
+
+        label{
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+
+        input[type="text"]
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        textarea{
+            height: 100px;
+            resize: none;
+        }
+
+        input[type="submit"]{
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            border:none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="barra-de-arriba">
+            <div><!--Aqui el logo nombre o cosa--></div>
+            <div class="botones">
+                <a href="/"><input type="button" value="Volver"></a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="form-container" id="form-container">
+            <form id="post-form"></form>
+        </div>
+    </main>
+</body>
+<script defer>
+    obtenerPost();
+    function obtenerPost() {
+
+        let searchParams = window.location.search;
+        let datosURL = searchParams.split('?');
+        datosURL = searchParams.split('id=');
+        let postId = datosURL[1];
+        console.log(postId);
+        fetch(`/api/post/${postId}`)
+            .then(response => response.json())
+            .then(post => {
+                console.log(post);
+                createFormPost(post);
+            })
+            .catch(err => console.error(err));
+    }
+
+    function createFormPost(post) {
+
+        let formPost = document.getElementById('post-form');
+
+        //Titulo
+        let labelTitle = document.createElement('label');
+        labelTitle.textContent = "Titulo del post: ";
+        let inputTitle = document.createElement('input');
+        inputTitle.type = 'text';
+        inputTitle.name = 'title';
+        inputTitle.id = 'title';
+        inputTitle.value = post.title;
+
+        //Descripcion
+        let labelDescription = document.createElement('label');
+        labelDescription.textContent = "Descripcion de post";
+        let textAreaDescription = document.createElement('textArea');
+        textAreaDescription.name = 'description';
+        textAreaDescription.id = 'description';
+        textAreaDescription.value = post.description;
+
+        //Submit
+        let inputSubmit = document.createElement('input');
+        inputSubmit.type = "submit";
+        inputSubmit.id = 'submit';
+        inputSubmit.value = "Modificar"
+        inputSubmit.addEventListener('click', function (e) {
+            e.preventDefault();
+            updatePost(post);
+            window.location.href = "/";
+        });
+
+        formPost.appendChild(labelTitle);
+        formPost.appendChild(inputTitle);
+
+        formPost.appendChild(labelDescription);
+        formPost.appendChild(textAreaDescription);
+
+        formPost.appendChild(inputSubmit);
+
+
+    }
+
+    function updatePost(post){
+        fetch(`/api/post/${post._id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert("Actualizado correctamente");
+        })
+        .catch(err => console.error(err));
+    }
+</script>
+
+</html>
