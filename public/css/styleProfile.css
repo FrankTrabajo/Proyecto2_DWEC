@@ -2,15 +2,17 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #d4d4ff;
+    background-color: #f4f4f9;
+    color: #333;
 }
 
 .profileIndex {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 1rem 2rem;
     background-color: #1e1e1e;
+    color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -20,16 +22,18 @@ body {
 }
 
 #userProfile {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
+    border:solid 2px #007bff;
     margin-right: 1rem;
 }
 
 #userNombre {
     margin: 0;
     font-size: 1.5rem;
-    color: #ffffff;
+    font-weight: bold;
+    color: #333;
 }
 
 #volverIndex {
@@ -46,6 +50,35 @@ body {
     background-color: #0056b3;
 }
 
+#main {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.postContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.post{
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 10px;
+    max-width: 850px;
+    text-align: center;
+}
+
+.post img{
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    image-rendering: crisp-edges;
+}
 
 #userPosts {
     display: flex

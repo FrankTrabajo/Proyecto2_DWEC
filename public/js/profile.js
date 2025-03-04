@@ -1,118 +1,138 @@
 /**
  * Funcion para crear la estructura del profile
  */
-function profileForm() {
-    let header = document.createElement("header");
-    document.body.appendChild(header);
+function profileForm(data) {
+    let header = document.getElementById('profileHeader');
+
     let profileIndex = document.createElement("div");
     profileIndex.className = "profileIndex";
-    header.appendChild(profileIndex);
+
     let infoUser = document.createElement("div");
     infoUser.className = "infoUser";
+
     profileIndex.appendChild(infoUser);
     let userProfile = document.createElement("img");
     userProfile.id = "userProfile";
     userProfile.src = "uploads/userDefault.png";
-    infoUser.appendChild(userProfile);
+    
     let userNombre = document.createElement("h2");
     userNombre.id = "userNombre";
-
-    userNombre.textContent = "Hola";
-    infoUser.appendChild(userNombre);
+    userNombre.textContent = data.name;
+    
+    let buttonCrearPost = document.createElement('button');
+    buttonCrearPost.id = "volverIndex";
+    buttonCrearPost.textContent = "Crear nuevo post";
+    buttonCrearPost.addEventListener('click', function() {
+        window.location.href = "/create_post";
+    })
 
     let volverIndex = document.createElement("button");
     volverIndex.id = "volverIndex";
-    volverIndex.textContent = "Volver al Índice";
-    profileIndex.appendChild(volverIndex);
-    let main = document.createElement("main");
-    main.id = "main";
-    document.body.appendChild(main);
-    let userPosts = document.createElement("div");
-    userPosts.id = "userPosts";
-    main.appendChild(userPosts);
+    volverIndex.textContent = "Volver";
     volverIndex.addEventListener('click', () => {
         window.location.href = '/';
     });
+
+    infoUser.appendChild(userProfile);
+    infoUser.appendChild(userNombre);
+    profileIndex.appendChild(infoUser);
+    profileIndex.appendChild(buttonCrearPost);
+    profileIndex.appendChild(volverIndex);
+    header.appendChild(profileIndex);
+    
 }
 
+function obtenerPosts(userId){
 
-/**
- * Funcion para cargar la información del usuario
- * @param {string} userId 
- */
-function cargarUserInfo(userId) {
-    fetch(`/api/user/${userId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error al cargar la información del usuario');
+    fetch("/api/post/")
+    .then(response => response.json())
+    .then(data => {
+        for(let post of data){
+            if(post.owner === userId){
+                pintarPOST(post);
             }
-            return response.json();
-        })
-        .then(data => {
-            const userProfile = document.getElementById('userProfile');
-            const userNombre = document.getElementById('userNombre');
-
-            userProfile.href = 'uploads/userDefault.png';
-            userNombre.textContent = data['name'];
-        })
-        .catch(err => {
-            console.error('Error al cargar la info del usuario:', err);
-        });
-}
-
-/**
- * Funcion para cargar los posts del usuario
- * @param {string} userId 
- */
-function cargarPostsUser(userId) {
-    fetch(`/api/user/${userId}/posts`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error al cargar los posts del usuario');
-            }
-            return response.json();
-        })
-        .then(data => {
-            pintarPostsUser(data);
-        })
-        .catch(err => {
-            console.error('Error al cargar los posts del usuario:', err);
-        });
-}
-
-/**
- * Funcion para pintar los posts del usuario
- * @param {Array} datos 
- */
-function pintarPostsUser(datos) {
-    const userPosts = document.getElementById('userPosts');
-    userPosts.innerHTML = '';
-
-    datos.forEach(post => {
-        const postDiv = document.createElement('div');
-        postDiv.className = 'post';
-
-        if (post.photo) {
-            postDiv.innerHTML = `
-                <p>${post.title}</p>
-                <p>${post.description}</p>
-                <img src="${post.photo}" alt="${post.title}"/>
-                <br>
-            `;
-        } else {
-            postDiv.innerHTML = `
-                <p>${post.title}</p>
-                <p>${post.description}</p>
-                <br>
-            `;
         }
+    })
+    .catch(err => console.error(err));
 
-        userPosts.appendChild(postDiv);
-    });
+
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    profileForm();
-    obtenerId();
-    cargarPostsUser();
-});
+/**
+ * Función para pintar los posts en el contenedor
+ * @param {Obj} datos 
+ */
+function pintarPOST(datos){
+    if(datos != null){
+        let divPosts = document.getElementById("postContainer");
+
+        let postDiv = document.createElement('div');
+        postDiv.classList.add('post');
+
+        let pTitle = document.createElement('h3');
+        pTitle.textContent = datos.title;
+
+        let pDescription = document.createElement('p');
+        pDescription.textContent = datos.description;
+
+        let imgPost = document.createElement('img');
+        imgPost.src = datos.photo;
+
+
+
+        postDiv.appendChild(pTitle);
+        postDiv.appendChild(pDescription);
+        postDiv.appendChild(imgPost);
+        divPosts.appendChild(postDiv);
+    }
+}
+
+
+
+
+/**
+ * Funcion para obtener el id del usuario a través de la URL
+ * @returns Retorna el ID del usuario
+ */
+function idFromUrl(){
+    let searchParams = window.location.search;
+    let datosURL = searchParams.split('?');
+    datosURL = searchParams.split('userId=');
+    let userId = datosURL[1];
+    return userId;
+}
+/**
+ * Funcion llamada fetch para obtener los datos del usuario logueado.
+ */
+function obtainUser(){
+    let userId = idFromUrl();
+    fetch(`/user/${userId}`)
+    .then(response => response.json())
+    .then(data => {
+        profileForm(data);
+        obtenerPosts(data._id);
+        
+    })
+    .catch(err => console.error(err));
+}
+
+/**
+ * Funcion para manejar la autenticación del usuario
+ */
+function checkAuth(){
+    fetch("/check-auth", { method: 'GET' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.logueado) {
+                obtainUser();
+            } else {
+                window.location.href='/';
+            }
+        })
+        .catch(err => console.error('Error al verificar la autenticación:', err));
+}
+
+document.addEventListener('DOMContentLoaded', checkAuth);
+
+
+ 
