@@ -64,6 +64,21 @@ function indexForm() {
     let buscarInput = document.createElement("input");
     buscarInput.type = "text";
     buscarInput.placeholder = "Buscar lugares";
+
+    buscarInput.addEventListener('keyup', function() {
+        let listaPost = document.getElementsByClassName("dp");
+        let busqueda = buscarInput.value.toLowerCase();
+
+        for(let i = 0 ; i < listaPost.length ; i++){
+            let tituloPost = listaPost[i].getElementsByClassName('tituloPost')[0].textContent.toLowerCase();
+            if(tituloPost.includes(busqueda)){
+                listaPost[i].style.display = "block";
+            }else {
+                listaPost[i].style.display = "none";
+            }
+        }
+    });
+
     buscarDiv.appendChild(buscarInput);
 
     let lupaImg = document.createElement("img");
@@ -102,7 +117,7 @@ function pintarPOST(datos){
             if (datos[i]['photo'] != null){
                 main.innerHTML += `
                     <div id="dp" class="${datos[i]['type']} dp">
-                        <p>${datos[i]['title']}</p>
+                        <p class="tituloPost" >${datos[i]['title']}</p>
                         <p>${datos[i]['description']}</p>
                         <img src="${datos[i]['photo']}"/>
                         <br>
@@ -111,7 +126,7 @@ function pintarPOST(datos){
             }else{
                 main.innerHTML += `
                     <div id="dp" class="${datos[i]['type']} dp">
-                        <p>${datos[i]['title']}</p>
+                        <p class="tituloPost">${datos[i]['title']}</p>
                         <p>${datos[i]['description']}</p>
                         <br>
                     </div>
