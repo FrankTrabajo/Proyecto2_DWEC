@@ -13,12 +13,20 @@ function registerForm(){
     let form = document.getElementById('register-form');
     let labelName = document.createElement('label');
     labelName.textContent = "Nombre de usuario";
+
     //Nombre de usuario
     let inputName = document.createElement('input');
     inputName.type = 'text';
     inputName.name = 'name';
     inputName.id = 'name';
     inputName.placeholder = 'Nombre de ususario';
+    inputName.required = true;
+
+    //Mensaje de error del nombre
+    let errorName = document.createElement('p');
+    errorName.id = 'errorName';
+    errorName.style.color = 'red';
+    errorName.style.display = 'none';
 
     //Correo eletrónico
     let labelEmail = document.createElement('label'); 
@@ -28,6 +36,13 @@ function registerForm(){
     inputEmail.name = 'email';
     inputEmail.id = 'email';
     inputEmail.placeholder = "Correo electrónico";
+    inputEmail.required = true;
+
+    //Mensaje de error del email
+    let errorEmail = document.createElement('p');
+    errorEmail.id = 'errorEmail';
+    errorEmail.style.color = 'red';
+    errorEmail.style.display = 'none';
 
     //Contraseña
     let labelPassword = document.createElement('label'); 
@@ -37,6 +52,13 @@ function registerForm(){
     inputPassword.name = 'password';
     inputPassword.id = 'password';
     inputPassword.placeholder = "Contraseña";
+    inputPassword.required = true;
+
+    //Mensaje de error de la contraseña
+    let errorPwd = document.createElement('p');
+    errorPwd.id = 'errorPwd';
+    errorPwd.style.color = 'red';
+    errorPwd.style.display = 'none';
 
     let inputSubmit = document.createElement('input');
     inputSubmit.type = "submit";
@@ -44,15 +66,20 @@ function registerForm(){
     inputSubmit.value = "Crear usuario";
     inputSubmit.addEventListener('click', function(e){
         e.preventDefault();
-        registrar();
+        if(validarFormulario()){
+            registrar();
+        }
     })
 
     form.appendChild(labelName);
     form.appendChild(inputName);
+    form.appendChild(errorName);
     form.appendChild(labelEmail);
     form.appendChild(inputEmail);
+    form.appendChild(errorEmail);
     form.appendChild(labelPassword);
     form.appendChild(inputPassword);
+    form.appendChild(errorPwd);
     form.appendChild(inputSubmit);
 
     formContainer.appendChild(form);
@@ -64,6 +91,43 @@ function registerForm(){
     a.href = '/login';
     p.appendChild(a);
     formContainer.appendChild(p);
+}
+
+function validarFormulario(){
+    let name = document.getElementById('name').value.trim();
+    let email = document.getElementById('email').value.trim();
+    let password = document.getElementById('password').value.trim();
+    let valido = true;
+
+    let errorName = document.getElementById('errorName');
+    if(name.length < 3 || name.length > 20){
+        errorName.textContent= 'El nombre tiene q tener entre 3 y 20 caracteres'
+        errorName.style.display = 'block';
+        valido = false;
+    }else{
+        errorName.style.display = 'none';
+    }
+
+    let errorEmail = document.getElementById('errorEmail');
+    let contenidoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!contenidoEmail.test(email)){
+        errorEmail.textContent = 'El email es incorrecto';
+        errorEmail.style.display = 'block';
+        valido = false;
+    }else{
+        errorEmail.style.display = 'none';
+    }
+
+    let errorPwd = document.getElementById('errorPwd');
+    if(password.length < 6){
+        errorPwd.textContent = 'La contreña debe tener al menos 6 caracteres';
+        errorPwd.style.display = 'block';
+        valido = false;
+    }else{
+        errorPwd.style.display = 'none';
+    }
+
+    return valido;
 }
 
 registerForm();
