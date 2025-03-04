@@ -8,6 +8,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
+const { default: mongoose } = require('mongoose');
 
 //Cargamos las variables de entorno desde el archivo .env
 dotenv.config();
@@ -153,11 +154,14 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
     try {
         const { id } = req.params;
+        const site = await Site.findByIdAndDelete({
+            postOwner: id
+        });
         const post = await Post.findByIdAndDelete(id);
-        if (!post) {
-            res.status(404).json({ message: "Post not found" });
+        if (!post || !site) {
+            res.status(404).json({ message: "Post o sitio no encontrado" });
         }
-        res.status(200).json({ message: "Post delete succesfully" });
+        res.status(200).json({ message: "Post y sitio eliminados correctamente" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
