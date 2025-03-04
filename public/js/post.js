@@ -126,6 +126,7 @@ function createForm(){
     inputSubmit.addEventListener('click', function(e){
         e.preventDefault();
         create(postForm, lat, long);
+        mostrarNotificacion();
         window.location.href = '/';
     });
 

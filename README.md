@@ -30,7 +30,7 @@
 ### 🗺️ **Interaccion con el mapa**
 
 - El mapa muestra las ubicaciones obtenidas de una API externa junto con las ubicaciones creadas por los usuarios
-- Al hacer click en una ubicacion de un usuario, este te redirige al post correspondiente.
+
 
 
 ----
