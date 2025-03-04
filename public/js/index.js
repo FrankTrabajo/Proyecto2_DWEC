@@ -249,8 +249,9 @@ function obtenerId(){
 
 // Cargamos los posts al cargar la página
 document.addEventListener('DOMContentLoaded', function () {
+    cargarPosts();
     indexForm();
     checkAuth();
     document.getElementById('logoutbutton').addEventListener('click', logout);
-    cargarPosts();
+    
 });
