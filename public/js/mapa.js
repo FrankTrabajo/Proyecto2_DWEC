@@ -105,7 +105,7 @@ function pintarUbicacion(coords,icono, titulo) {
  * @param {string} titulo 
  */
 function pintarSite(coords, titulo) {
-
+    //console.log(coords);    
     let marcador = L.marker(coords)
     .bindPopup()
     .addTo(map);
@@ -132,7 +132,7 @@ function cargarDatos(){
     xhr.onload = function(){
         switch(xhr.status){
             case 200:
-                console.log(JSON.parse(xhr.response)['elements']);
+                //console.log(JSON.parse(xhr.response)['elements']);
                 const ubicaciones = JSON.parse(xhr.response)['elements'];
 
                 ubicaciones.forEach(element => {
@@ -156,7 +156,10 @@ function cargarSitios(){
     .then(response => response.json())
     .then(data => {
         for(let ubicacion of data){
-            pintarSite([ubicacion.lat, ubicacion.lon],ubicacion.siteName);
+            if(ubicacion.lat || ubicacion.lon){
+                pintarSite([ubicacion.lat, ubicacion.lon],ubicacion.siteName);
+            }
+            
         }
         
     })
