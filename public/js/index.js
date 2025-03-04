@@ -15,6 +15,7 @@ function indexForm() {
     //Creamos el boton que nos lleve a la creación de un post y lugar
     let crearButton = document.createElement("a");
     crearButton.href = "/create_post";
+    crearButton.id = "crearButton";
     let crearInput = document.createElement("input");
     crearInput.type = "button";
     crearInput.value = "Crear";
@@ -174,10 +175,12 @@ function checkAuth(){
             if (data.logueado) {
                 document.getElementById('loginbutton').style.display = 'none';
                 document.getElementById('registerbutton').style.display = 'none';
+                document.getElementById('crearButton').style.display = 'inline-block';
                 document.getElementById('logoutbutton').style.display = 'inline-block';
             } else {
                 document.getElementById('loginbutton').style.display = 'inline-block';
                 document.getElementById('registerbutton').style.display = 'inline-block';
+                document.getElementById('crearButton').style.display = 'none';
                 document.getElementById('logoutbutton').style.display = 'none';
             }
         })
